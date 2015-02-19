@@ -2,69 +2,50 @@
 % Please edit documentation in R/npIntFactRep.R
 \name{npIntFactRep}
 \alias{npIntFactRep}
-\title{Nonparametric Aligned Ranks Function}
+\title{Nonparametric Interaction Tests for Factorial Designs with Repeated Measures}
 \usage{
 npIntFactRep(dat,rank)
 }
 \arguments{
-\item{dat}{data set in wide (one row per subject) format, see examples
-- must have subj as name (header) of numeric var for units of obs id
-- must have group as name of numeric var for between factor}
+\item{dat}{The R data set in wide (one row per subject) format. This should NOT have any missing values (NA). Missing data should be replaced before running. We suggest using the 'mi', 'mice' or 'Amelia' package for multiple imputations. The data set MUST have subj as name (header) of the (numeric or character) variable for units of observations and MUST have group as name of the (numeric or character) variable for between factor.}
 
-\item{rank}{numbers 1, 2 or 3; resp. for Regular, Friedman, or Koch ranks}
+\item{rank}{The numbers 1, 2 or 3; resp. for Regular, Friedman, or Koch ranks.}
 }
 \value{
-summary of (aov) Anova F-tests and p-value
+Anova F-tests and p-values for the 'group:time' interaction
 }
 \description{
-Nonparametric test for interactions in two-way factorial designs
-with repeated measures - "summary" of full model "aov" on (for interaction) aligned ranks
+Nonparametric aligned rank tests for interactions in two-way factorial designs with repeated measures.
 }
 \details{
-desired ranks numbers:
-1 Regular ranks of aligned data
-2 Friedman ranks of aligned data
-3 Koch ranks
-Returns ANOVA F test and probabilities.
-Only the resulting values for 'group x time' ('between x within') are relevant
+Returns an ANOVA table using the 'ezANOVA' function (from the 'ez' package by Michael A. Lawrence), which is well-suited for factorial design experiments with repeated measures. It yields ANOVA F- and p-values, generalized effect sizes and assumption checks. Type III sums of squares are calculated. ONLY the resulting values for the 'group:time' (between x within) INTERACTION are relevant. There is a choice between three types of aligned ranks for the tests: (1) REGULAR, (2) FRIEDMAN, and (3) KOCH ranks.
 }
 \examples{
 \dontrun{
-dat1 <- read.csv (file="c:/R/wide.csv", head=T)
+dat1<-read.csv(file="c:/R/wide.csv",head=T)
 #REGULAR
 npIntFactRep(dat1,1)
 }
-dat2 <- read.table(header = TRUE, text = "
-subj group m1 m2 m3 m4
-1 1 1 2 3 4
-2 1 2 2 3 3
-3 1 1 3 3 4
-4 2 8 6 4 2
-5 2 6 6 4 4
-6 2 8 6 6 2
+dats<-read.table(header=TRUE,text="
+subj group x1 x2 x3 x4
+p1 a 1 2 3 4
+p2 a 2 2 3 3
+p3 a 1 3 3 4
+p4 b 8 6 4 2
+p5 b 6 6 4 4
+p6 b 8 6 6 2
+p7 c 4 4 4 3
+p8 c 3 3 3 4
+p9 c 3 4 4 2
 ")
 #FRIEDMAN
-npIntFactRep(dat2,2)
-dat3 <- read.table(header = TRUE, text = "
-subj group 1 2 3 4 5
-1 1 1 2 3 4 5
-2 1 2 2 3 3 3
-3 1 1 3 3 4 2
-4 2 8 6 4 2 1
-5 2 6 6 4 4 4
-6 2 8 6 6 2 3
-")
-#KOCH Ranks
-npIntFactRep(dat3,3)
+npIntFactRep(dats,2)
 }
 \author{
 Jos Feys
 }
 \references{
-Higgins, J.J., & Tashtoush, S. (1994). "An aligned rank transform test for interaction".
-Nonlinear World, 1, 201-211.
-Beasley, T.M., & Zumbo, B.D. (2009). "Aligned rank tests for interactions
-in split-plot designs: Distributional assumptions and stochastic homogeneity".
-Journal of Modern Applied Statistical Methods, 8, 16-50.
+Higgins, J.J., & Tashtoush, S. (1994). "An aligned rank transform test for interaction". Nonlinear World, 1, 201-211.
+Beasley, T.M., & Zumbo, B.D. (2009). "Aligned rank tests for interactions in split-plot designs: Distributional assumptions and stochastic homogeneity". Journal of Modern Applied Statistical Methods, 8, 16-50.
 }
 
